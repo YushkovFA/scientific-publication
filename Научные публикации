@@ -1,0 +1,255 @@
+-- phpMyAdmin SQL Dump
+-- version 5.1.1
+-- https://www.phpmyadmin.net/
+--
+-- Хост: 127.0.0.1:3306
+-- Время создания: Апр 20 2025 г., 12:51
+-- Версия сервера: 8.0.24
+-- Версия PHP: 7.1.33
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- База данных: `научная публикация 2`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `authorpublication`
+--
+
+CREATE TABLE `authorpublication` (
+  `id` int NOT NULL COMMENT 'первичный ключ',
+  `author_id` int NOT NULL COMMENT 'внешний ключ',
+  `publication_id` int NOT NULL COMMENT 'внешний ключ'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Дамп данных таблицы `authorpublication`
+--
+
+INSERT INTO `authorpublication` (`id`, `author_id`, `publication_id`) VALUES
+(1, 1, 1),
+(2, 4, 1),
+(3, 1, 2),
+(4, 2, 2),
+(5, 4, 2),
+(6, 3, 3),
+(7, 4, 3),
+(8, 1, 4),
+(9, 5, 4),
+(10, 2, 5),
+(11, 5, 5),
+(12, 3, 6),
+(13, 5, 6),
+(14, 1, 7),
+(15, 6, 7),
+(16, 2, 8),
+(17, 6, 8),
+(18, 3, 9),
+(19, 6, 9);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `authors`
+--
+
+CREATE TABLE `authors` (
+  `author_id` int NOT NULL,
+  `first_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'имя',
+  `last_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'фамилия',
+  `affiliation` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'вуз',
+  `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'почта'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Дамп данных таблицы `authors`
+--
+
+INSERT INTO `authors` (`author_id`, `first_name`, `last_name`, `affiliation`, `email`) VALUES
+(1, 'Иван', 'Петров', 'СурГУ', 'ivan.petrov@gmail.com'),
+(2, 'Мария', 'Сидорова', 'СурГУ', 'maria.sidorova@gmail.com'),
+(3, 'Алексей', 'Иванов', 'СурГУ', 'alex.ivanov@gmail.com'),
+(4, 'Елена', 'Смирнова', 'СурГУ', 'elena.smirnova@gmail.com'),
+(5, 'Дмитрий', 'Кузнецов', 'СурГУ', 'dmitry.kuznetsov@gmail.com'),
+(6, 'Анна', 'Васильева', 'СурГУ', 'anna.vasilyeva@gmail.com');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `categories`
+--
+
+CREATE TABLE `categories` (
+  `category_id` int NOT NULL,
+  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'имя',
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT 'описание'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Дамп данных таблицы `categories`
+--
+
+INSERT INTO `categories` (`category_id`, `name`, `description`) VALUES
+(1, 'Информатика', 'Исследования в области алгоритмов, систем и теории вычислений'),
+(2, 'Биология', 'Исследования в области наук о жизни и организмах'),
+(3, 'Физика', 'Фундаментальные законы природы и материи');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `journals`
+--
+
+CREATE TABLE `journals` (
+  `journal_id` int NOT NULL,
+  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'имя',
+  `publisher` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'издатель',
+  `impact_factor` decimal(5,2) DEFAULT NULL COMMENT 'популярность',
+  `founding_year` int DEFAULT NULL COMMENT 'год выпуска'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Дамп данных таблицы `journals`
+--
+
+INSERT INTO `journals` (`journal_id`, `name`, `publisher`, `impact_factor`, `founding_year`) VALUES
+(1, 'Journal of Computer Science', 'Elsevier', '3.45', 1995),
+(2, 'Biological Research', 'Springer', '2.78', 1980),
+(3, 'Physics Review', 'Nature', '4.12', 1972),
+(4, 'Multidisciplinary Science', 'Science Direct', '3.89', 2005);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `publications`
+--
+
+CREATE TABLE `publications` (
+  `publication_id` int NOT NULL,
+  `title` varchar(200) NOT NULL,
+  `abstract` text,
+  `publication_date` date DEFAULT NULL,
+  `category_id` int DEFAULT NULL,
+  `journal_id` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Дамп данных таблицы `publications`
+--
+
+INSERT INTO `publications` (`publication_id`, `title`, `abstract`, `publication_date`, `category_id`, `journal_id`) VALUES
+(1, 'Квантовые алгоритмы', 'Исследование новых алгоритмов для квантовых компьютеров', '2023-01-15', 1, 4),
+(2, 'Нейронные сети', 'Применение глубокого обучения для распознавания образов', '2023-02-20', 1, 1),
+(3, 'Кибербезопасность', 'Новые методы защиты данных в распределенных системах', '2023-03-10', 1, 1),
+(4, 'Генетика растений', 'Изучение геномов сельскохозяйственных культур', '2023-04-05', 2, 2),
+(5, 'Микробиом человека', 'Анализ бактериального состава кишечника', '2023-05-12', 2, 4),
+(6, 'Эволюция видов', 'Новые данные о скорости эволюционных процессов', '2023-06-18', 2, 2),
+(7, 'Квантовая гравитация', 'Теоретические основы объединения квантовой теории и гравитации', '2023-07-22', 3, 3),
+(8, 'Сверхпроводимость', 'Эксперименты с высокотемпературными сверхпроводниками', '2023-08-30', 3, 3),
+(9, 'Темная материя', 'Новые подходы к обнаружению темной материи', '2023-09-14', 3, 4);
+
+--
+-- Индексы сохранённых таблиц
+--
+
+--
+-- Индексы таблицы `authorpublication`
+--
+ALTER TABLE `authorpublication`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `author_id` (`author_id`),
+  ADD KEY `publication_id` (`publication_id`);
+
+--
+-- Индексы таблицы `authors`
+--
+ALTER TABLE `authors`
+  ADD PRIMARY KEY (`author_id`);
+
+--
+-- Индексы таблицы `categories`
+--
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`category_id`);
+
+--
+-- Индексы таблицы `journals`
+--
+ALTER TABLE `journals`
+  ADD PRIMARY KEY (`journal_id`);
+
+--
+-- Индексы таблицы `publications`
+--
+ALTER TABLE `publications`
+  ADD PRIMARY KEY (`publication_id`),
+  ADD KEY `category_id` (`category_id`),
+  ADD KEY `journal_id` (`journal_id`);
+
+--
+-- AUTO_INCREMENT для сохранённых таблиц
+--
+
+--
+-- AUTO_INCREMENT для таблицы `authorpublication`
+--
+ALTER TABLE `authorpublication`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT COMMENT 'первичный ключ', AUTO_INCREMENT=20;
+
+--
+-- AUTO_INCREMENT для таблицы `authors`
+--
+ALTER TABLE `authors`
+  MODIFY `author_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT для таблицы `categories`
+--
+ALTER TABLE `categories`
+  MODIFY `category_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT для таблицы `journals`
+--
+ALTER TABLE `journals`
+  MODIFY `journal_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT для таблицы `publications`
+--
+ALTER TABLE `publications`
+  MODIFY `publication_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- Ограничения внешнего ключа сохраненных таблиц
+--
+
+--
+-- Ограничения внешнего ключа таблицы `authorpublication`
+--
+ALTER TABLE `authorpublication`
+  ADD CONSTRAINT `authorpublication_ibfk_1` FOREIGN KEY (`author_id`) REFERENCES `authors` (`author_id`),
+  ADD CONSTRAINT `authorpublication_ibfk_2` FOREIGN KEY (`publication_id`) REFERENCES `publications` (`publication_id`);
+
+--
+-- Ограничения внешнего ключа таблицы `publications`
+--
+ALTER TABLE `publications`
+  ADD CONSTRAINT `publications_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`),
+  ADD CONSTRAINT `publications_ibfk_2` FOREIGN KEY (`journal_id`) REFERENCES `journals` (`journal_id`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
